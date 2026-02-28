@@ -21,6 +21,8 @@ async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule)
 	app.useStaticAssets(join(__dirname, '..', 'public'))
 
+	app.enableCors();
+	
 	const { httpAdapter } = app.get(HttpAdapterHost)
 	const PORT = app.get(ConfigService).getOrThrow('API_PORT')
 

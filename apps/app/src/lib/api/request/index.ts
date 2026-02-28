@@ -1,0 +1,18 @@
+// função para fazer uma promise de requisição à API
+import type { ApiResponse, DataType } from '@repo/schemas'
+import api from '@/lib/api/config/axios'
+import { asyncApiTryCatch } from '@/lib/api/error'
+import type { ApiRequestParams, ApiRequestReturn } from '@/lib/types/api'
+
+export async function apiRequest<
+	T extends DataType,
+	D extends DataType = never
+>({ method, url, data }: ApiRequestParams<D>): ApiRequestReturn<T> {
+	return asyncApiTryCatch(
+		api.request<ApiResponse<T>>({
+			method,
+			url,
+			data
+		})
+	)
+}

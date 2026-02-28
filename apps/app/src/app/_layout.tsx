@@ -1,10 +1,9 @@
-import { Text } from "react-native";
+import Index from "./index";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout() {
     return (
         <>
-            <Text>Layout</Text>
-            {children}
+           <Index />
         </>
     )
-}
+} 

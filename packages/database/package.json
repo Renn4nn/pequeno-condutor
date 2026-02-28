@@ -1,0 +1,46 @@
+{
+  "name": "@repo/database",
+  "version": "1.0.0",
+  "description": "Shared db types",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "lint": "biome lint --write",
+    "format": "biome format --write",
+    "check-types": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:generate": "prisma generate",
+    "db:seed": "prisma db seed",
+    "db:deploy": "prisma migrate deploy",
+    "db:migrate": "dotenv -e ../../.env.database.development -- prisma migrate dev",
+    "db:seed:dev": "dotenv -e ../../.env.database.development -- prisma db seed",
+    "db:seed:test": "dotenv -e ../../.env.database.test -- prisma db seed",
+    "db:deploy:test": "dotenv -e ../../.env.database.test -- prisma migrate deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@repo/config": "workspace:^",
+    "@repo/typescript-config": "workspace:^",
+    "@types/node": "^25.0.9",
+    "@types/pg": "^8.16.0",
+    "dotenv-cli": "^11.0.0",
+    "prisma": "^7.2.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/client": "^7.2.0",
+    "dotenv": "^17.2.3",
+    "pg": "^8.17.1"
+  }
+}

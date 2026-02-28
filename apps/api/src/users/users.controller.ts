@@ -1,0 +1,73 @@
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	ParseUUIDPipe,
+	Patch,
+	Post
+} from '@nestjs/common'
+import { RESOURCES } from '@repo/constants'
+import { ApiSuccessResponse, UserSchema } from '@repo/schemas'
+import { ZodResponse } from 'nestjs-zod'
+import {
+	CreateUserDto,
+	UpdateUserDto,
+	UserDto
+} from 'src/lib/types/dto/user.dto'
+import { IUserController } from 'src/lib/types/interfaces/user.interface'
+import { UsersService } from './users.service'
+
+@Controller(RESOURCES.USERS)
+export class UsersController implements IUserController {
+	constructor(private readonly service: UsersService) {}
+
+	@Get(':id')
+	async getUserById(
+		@Param('id', ParseUUIDPipe) id: string
+	): Promise<ApiSuccessResponse<UserSchema>> {
+		return {
+			data: await this.service.getUserById(id)
+		}
+	}
+
+	@Get()
+	async getUsers(): Promise<ApiSuccessResponse<UserSchema[]>> {
+		return {
+			data: await this.service.getUsers()
+		}
+	}
+
+	@Post()
+	@ZodResponse({ type: UserDto })
+	async createUser(
+		@Body() userData: CreateUserDto
+	): Promise<ApiSuccessResponse<UserSchema>> {
+		const user = await this.service.createUser(userData)
+		return {
+			data: user
+		}
+	}
+
+	@Patch(':id')
+	@ZodResponse({ type: UserDto })
+	async updateUser(
+		@Param('id', ParseUUIDPipe) id: string,
+		@Body() data: UpdateUserDto
+	): Promise<ApiSuccessResponse<UserSchema>> {
+		const user = await this.service.updateUserById(id, data)
+		return {
+			data: user
+		}
+	}
+
+	@Delete(':id')
+	async deleteUser(
+		@Param('id', ParseUUIDPipe) id: string
+	): Promise<ApiSuccessResponse<UserSchema>> {
+		return {
+			data: await this.service.deleteUserById(id)
+		}
+	}
+}
